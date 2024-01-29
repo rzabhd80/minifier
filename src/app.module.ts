@@ -8,6 +8,7 @@ import { UploadModule } from "./upload/upload.module";
 import { CurrentUserMiddleware } from "../middlewares";
 import { MulterModule } from "@nestjs/platform-express";
 import { MimeTypeMiddleware } from "../middlewares/upload_file_middleware";
+import * as process from "process";
 
 @Module({
   imports: [
@@ -15,9 +16,9 @@ import { MimeTypeMiddleware } from "../middlewares/upload_file_middleware";
       type: "postgres",
       host: "db",
       port: 5432,
-      username: "reza",
-      password: "reza",
-      database: "minification",
+      username: process.env.DATABASE_USER || "reza",
+      password: process.env.DATABASE_PASSWORD || "reza",
+      database: process.env.DATABASE_HOST || "minification",
       entities: [__dirname + "/**/*.entity{.ts,.js}"],
       synchronize: true,
     }),

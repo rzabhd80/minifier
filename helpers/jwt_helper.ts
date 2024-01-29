@@ -1,4 +1,4 @@
-import { User } from '../libs/models';
+import { User } from "../libs/models";
 
 export interface IToken {
   id: string;
