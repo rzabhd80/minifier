@@ -1,3 +1,6 @@
+import * as dotenv from "dotenv";
+
+dotenv.config();
 import { MiddlewareConsumer, Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -8,7 +11,6 @@ import { UploadModule } from "./upload/upload.module";
 import { CurrentUserMiddleware } from "../middlewares";
 import { MulterModule } from "@nestjs/platform-express";
 import { MimeTypeMiddleware } from "../middlewares/upload_file_middleware";
-import * as process from "process";
 
 @Module({
   imports: [

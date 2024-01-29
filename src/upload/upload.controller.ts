@@ -10,7 +10,7 @@ import {
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UploadFileDtoRequest } from "./dto";
-import { CommandBus, QueryBus } from "@nestjs/cqrs";
+import { CommandBus } from "@nestjs/cqrs";
 import { UploadFileCommand } from "./command/impl";
 import { currentUser } from "decorators";
 import { User } from "libs/models";
@@ -20,10 +20,7 @@ import { userGuard } from "middlewares";
 @Controller("upload")
 @UseInterceptors(ClassSerializerInterceptor)
 export class UploadController {
-  constructor(
-    private readonly commandBus: CommandBus,
-    private readonly queryBus: QueryBus
-  ) {}
+  constructor(private readonly commandBus: CommandBus) {}
 
   @UseInterceptors(FileInterceptor("file"))
   @Post("/upload")
