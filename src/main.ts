@@ -1,7 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import * as process from "process";
-import * as helmet from "helmet";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
@@ -18,7 +17,6 @@ async function bootstrap() {
     swaggerOptions: { persistAuthorization: true },
     customSiteTitle: "MNFY-" + process.env.MODE,
   });
-  app.use(helmet);
   const port = process.env.PORT || 3000;
   await app.listen(port);
   console.log(`application is up on port ${port}`);
