@@ -5,7 +5,7 @@ import { BaseModel } from './base_model';
 @Entity('user', { schema: 'public' })
 export class User extends BaseModel {
   @Column('varchar', { name: 'name', nullable: false, unique: false })
-  Name: string;
+  name: string;
   @Column('varchar', { unique: true })
   email: string;
   @Column()
