@@ -3,9 +3,9 @@ import parseBearerToken from "parse-bearer-token";
 import { ForbiddenException, Injectable, NestMiddleware } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Request, Response, NextFunction } from "express";
-import { Repository } from "typeorm";
 import { IToken } from "../helpers";
 import { User } from "../libs/models";
+import { Repository } from "typeorm";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -23,9 +23,9 @@ declare global {
 @Injectable()
 export class CurrentUserMiddleware implements NestMiddleware {
   constructor(
+    private jwtService: JwtService,
     @InjectRepository(User)
-    private userRepository: Repository<User>,
-    private jwtService: JwtService
+    private readonly userRepository: Repository<User>
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {

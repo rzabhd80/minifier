@@ -19,7 +19,10 @@ async function bootstrap() {
     customSiteTitle: "MNFY-" + process.env.MODE,
   });
   app.use(helmet);
-  await app.listen(process.env.PORT || 3000);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`application is up on port ${port}`);
+  console.log(`documentation is up on 127.0.0.1:${port}/docs`);
 }
 
 bootstrap();

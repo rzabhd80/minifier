@@ -8,15 +8,17 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { JwtModule } from "@nestjs/jwt";
 import { UserModule } from "./user/user.module";
 import { UploadModule } from "./upload/upload.module";
-import { CurrentUserMiddleware } from "../middlewares";
+import { CurrentUserMiddleware, userGuard } from "../middlewares";
 import { MulterModule } from "@nestjs/platform-express";
 import { MimeTypeMiddleware } from "../middlewares/upload_file_middleware";
+import * as process from "process";
+import { entities } from "../libs/models";
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: "postgres",
-      host: "db",
+      host: "127.0.0.1",
       port: 5432,
       username: process.env.DATABASE_USER || "reza",
       password: process.env.DATABASE_PASSWORD || "reza",
@@ -30,6 +32,7 @@ import { MimeTypeMiddleware } from "../middlewares/upload_file_middleware";
     }),
     UserModule,
     UploadModule,
+    TypeOrmModule.forFeature(entities),
     MulterModule.register({ dest: "/opt" }),
   ],
   controllers: [AppController],
