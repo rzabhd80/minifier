@@ -1,4 +1,4 @@
-import { UserSignupDto } from 'libs/dto';
+import { UserSignupDto } from "libs/dto";
 
 export class UserSignupCommand {
   constructor(public readonly UserSignupDto: UserSignupDto) {}

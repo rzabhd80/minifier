@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus } from "@nestjs/common";
 
 export interface ICustomError {
   status: number;
@@ -13,10 +13,14 @@ export class CustomError extends HttpException {
 
 export const USER_NOT_FOUND: ICustomError = {
   status: HttpStatus.NOT_FOUND,
-  description: 'User Not Found',
+  description: "User Not Found",
 };
 
 export const INVALID_PASSWORD: ICustomError = {
   status: HttpStatus.BAD_REQUEST,
-  description: 'Incorrect Password',
+  description: "Incorrect Password",
+};
+export const MINIFICATION_FAILED: ICustomError = {
+  status: HttpStatus.INTERNAL_SERVER_ERROR,
+  description: "could not minify the file",
 };

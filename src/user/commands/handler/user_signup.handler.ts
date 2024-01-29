@@ -1,17 +1,17 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserSignupCommand } from '../impl/user_signup.command';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'libs/models';
-import { Repository } from 'typeorm';
-import { JwtService } from '@nestjs/jwt';
-import { generateUserToken } from 'helpers';
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { UserSignupCommand } from "../impl/user_signup.command";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "libs/models";
+import { Repository } from "typeorm";
+import { JwtService } from "@nestjs/jwt";
+import { generateUserToken } from "helpers";
 
 @CommandHandler(UserSignupCommand)
 export class UserSignupHandler implements ICommandHandler<UserSignupCommand> {
   constructor(
     @InjectRepository(User)
     private userRepo: Repository<User>,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
   async execute(command: UserSignupCommand) {

@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { UserLoginDto } from '../../../libs/dto';
+import { ApiProperty } from "@nestjs/swagger";
+import { UserLoginDto } from "libs/dto";
 
 export class UserLoginDtoRequest extends UserLoginDto {
   @ApiProperty()
