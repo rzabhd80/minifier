@@ -10,6 +10,7 @@ import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { UserLoginDtoRequest, UserSignupDtoRequest } from "./dto";
 import { UserSignupCommand } from "./commands/impl/user_signup.command";
 import { UserLoginCommand } from "./commands/impl/user_login.command";
+import { SeederFactoryCommand } from "./commands/impl/seeder_factory.command";
 
 @ApiTags("/user")
 @Controller("user")
@@ -20,6 +21,14 @@ export class UserController {
     private readonly commandBus: CommandBus
   ) {}
 
+  @Post("/seed")
+  @ApiOperation({
+    description:
+      "seeds database with factory, created user will be parspack@parspack.com",
+  })
+  async seedDatabase() {
+    return this.commandBus.execute(new SeederFactoryCommand());
+  }
   @Post("/signup")
   @ApiOperation({ description: "signup user" })
   async signupUser(@Body() signUpUserDto: UserSignupDtoRequest) {
