@@ -3,7 +3,6 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Post,
-  UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
@@ -11,7 +10,6 @@ import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { UserLoginDtoRequest, UserSignupDtoRequest } from "./dto";
 import { UserSignupCommand } from "./commands/impl/user_signup.command";
 import { UserLoginCommand } from "./commands/impl/user_login.command";
-import { userGuard } from "../../middlewares";
 
 @ApiTags("/user")
 @Controller("user")

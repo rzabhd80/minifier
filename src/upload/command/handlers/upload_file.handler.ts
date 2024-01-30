@@ -133,6 +133,8 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
         fileEntity.memoryUsageAfterMinification = memoryUsage;
       }
       fileEntity.filename = safeFileName;
+      fileEntity.mimetype = uploadedFileMime;
+      fileEntity.user = user;
       fileEntity.size = file.size;
       fileEntity.createdAt = new Date();
       await this.uploadedFileRepository.save(fileEntity);
