@@ -33,7 +33,7 @@ export class UploadController {
   ) {}
 
   @UseInterceptors(FileInterceptor("file"))
-  @Post("/upload")
+  @Post()
   @ApiConsumes("multipart/form-data", "application/json")
   @ApiOperation({
     description: "upload js or css file",
