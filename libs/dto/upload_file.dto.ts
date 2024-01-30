@@ -5,4 +5,7 @@ export class UploadFileDto {
   @IsNotEmpty()
   @IsBoolean()
   minify: boolean;
+
+  @IsNotEmpty()
+  file: any;
 }

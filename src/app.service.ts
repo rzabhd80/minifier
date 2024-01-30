@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class AppService {
   bootstrap_test(): string {
-    return 'application is up!';
+    return "application is up!";
   }
 }

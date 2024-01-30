@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "libs/models";
 import { Repository } from "typeorm";
 import { JwtService } from "@nestjs/jwt";
-import { generateUserToken } from "helpers";
+import { generateHashPassword, generateUserToken } from "helpers";
 
 @CommandHandler(UserSignupCommand)
 export class UserSignupHandler implements ICommandHandler<UserSignupCommand> {
@@ -17,9 +17,10 @@ export class UserSignupHandler implements ICommandHandler<UserSignupCommand> {
   async execute(command: UserSignupCommand) {
     const { UserSignupDto } = command;
     const { email, password, name } = UserSignupDto;
+    const hashed_password = await generateHashPassword(password);
     const user = this.userRepo.create({
       email,
-      password,
+      password: hashed_password,
       name,
     });
     await user.save();

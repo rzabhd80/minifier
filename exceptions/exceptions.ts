@@ -24,3 +24,14 @@ export const MINIFICATION_FAILED: ICustomError = {
   status: HttpStatus.INTERNAL_SERVER_ERROR,
   description: "could not minify the file",
 };
+
+export const INVALID_TOKEN: ICustomError = {
+  status: HttpStatus.UNAUTHORIZED,
+  description:
+    "token is invalid, maybe you should delete the bearer you wrote in  the swagger ui part?",
+};
+
+export const INVALID_MIMETYPE: ICustomError = {
+  status: HttpStatus.BAD_REQUEST,
+  description: "unsupported mime type",
+};

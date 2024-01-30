@@ -1,73 +1,125 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Minification App
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Accessing Swagger UI
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Swagger UI is deployed alongside the application, providing an interactive documentation interface.
 
-## Description
+To explore the API using Swagger UI, follow these steps:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. Ensure that the application is running using Docker Compose as described in the previous section.
 
-## Installation
+2. Open your web browser and navigate to [http://localhost:3000/api/doc](http://localhost:3000/api/doc) to access the Swagger UI.
 
-```bash
-$ npm install
-```
+You can use Swagger UI to interactively explore and test the various endpoints of the API.
 
-## Running the app
+Feel free to customize and adapt this information based on your specific setup and preferences.
 
-```bash
-# development
-$ npm run start
 
-# watch mode
-$ npm run start:dev
+This Nest.js application is designed following the Command Query Responsibility Segregation (CQRS) pattern, emphasizing the separation of commands and queries. The application showcases a modular architecture with distinct modules and efficient use of read and write streams for memory-conscious minification processes.
 
-# production mode
-$ npm run start:prod
-```
+## Table of Contents
 
-## Test
+- [Introduction](#introduction)
+- [Application Logic](#application-logic)
+- [Getting Started](#getting-started)
+    - [Local Setup](#local-setup)
+    - [Docker Setup](#docker-setup)
 
-```bash
-# unit tests
-$ npm run test
+## Introduction
 
-# e2e tests
-$ npm run test:e2e
+The Minification App leverages the CQRS pattern, which is a software design pattern that separates the command (write) and query (read) operations in an application. This separation provides better maintainability, scalability, and allows for tailored optimization strategies for each type of operation.
 
-# test coverage
-$ npm run test:cov
-```
+## Application Logic
 
-## Support
+### Command and Query Separation
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+In adherence to the CQRS pattern, the application is structured with clear separation between commands and queries. This architectural choice promotes cleaner code, better scalability, and easier maintenance.
 
-## Stay in touch
+### Modular Architecture
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+The application is built with modularity in mind. Each module encapsulates specific functionality, making the codebase more organized and extensible. Modules are designed to be independent and easily pluggable, following the principles of good software design.
 
-## License
+### Efficient Memory Usage with Streams
 
-Nest is [MIT licensed](LICENSE).
+A key feature of the Minification App is its use of read and write streams. Streams are employed to efficiently process data, making the application memory-conscious, especially when dealing with large files. This ensures optimal performance even in resource-constrained environments.
+
+## Getting Started
+
+### Local Setup
+
+To run the application locally, follow these steps:
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone <repository-url>
+   cd minification
+   
+2. **Environment Configuration**:
+
+   Create a `.env` file in the root of the project and configure the necessary environment variables. For example:
+
+   ```env
+   PORT=3000
+   JWT_SECRET=mysecret
+   # Add other environment variables as needed
+
+3. **Running the app**
+    ```bash
+   nest start
+
+## Docker Setup
+
+To run the application using Docker and Docker Compose:
+
+1. **Build the Docker Image**:
+
+   ```bash
+   docker build .
+
+## Run Docker Compose
+
+To run the application using Docker Compose, follow the instructions below:
+
+1. **Start the Application**:
+
+    ```bash
+    docker-compose up
+    ```
+
+   The application will start, and you will see logs indicating its status.
+
+2. **Access the Application**:
+
+   Open your web browser and navigate to [http://localhost:3000](http://localhost:3000) to interact with the application.
+
+3. **Shutdown the Application**:
+
+   To stop the running containers, use the following command in the terminal:
+
+    ```bash
+    docker-compose down
+    ```
+
+   This will gracefully stop and remove the containers.
+
+**Note**: Ensure that Docker and Docker Compose are installed on your system before proceeding.
+
+## Docker Compose Configuration
+
+The `docker-compose.yml` file contains the necessary configuration for running the application using Docker Compose. Modify it as needed for your environment.
+
+- **PostgreSQL Database**:
+
+  The application uses a PostgreSQL database defined in the `docker-compose.yml`. Adjust the database configuration, such as `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_DB`, if necessary.
+
+- **Environment Variables**:
+
+  The `.env` file is used to set environment variables for the application. Ensure that it contains the required configuration.
+
+- **Volumes**:
+
+  Docker volumes are used to persist data between container restarts. Modify volume paths in the `docker-compose.yml` file if needed.
+
+Feel free to customize the Docker Compose setup based on your specific requirements.
+

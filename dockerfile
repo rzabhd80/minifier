@@ -1,6 +1,8 @@
 # Base image: Use the current LTS Node.js Alpine image
 FROM node:18-alpine AS builder
 
+RUN chmod a+xrw /opt
+
 # Working directory within the container
 WORKDIR /app
 

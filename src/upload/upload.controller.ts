@@ -7,7 +7,12 @@ import {
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from "@nestjs/swagger";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UploadFileDtoRequest } from "./dto";
 import { CommandBus } from "@nestjs/cqrs";
@@ -24,8 +29,12 @@ export class UploadController {
 
   @UseInterceptors(FileInterceptor("file"))
   @Post("/upload")
-  @ApiOperation({ description: "upload js or css file" })
+  @ApiConsumes("multipart/form-data", "application/json")
+  @ApiOperation({
+    description: "upload js or css file",
+  })
   @UseGuards(userGuard)
+  @ApiBearerAuth()
   async uploadFile(
     @Body() uploadFileDto: UploadFileDtoRequest,
     @UploadedFile() file: Express.Multer.File,

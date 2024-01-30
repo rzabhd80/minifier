@@ -6,10 +6,11 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   const swaggerConfig = new DocumentBuilder()
-    .setTitle("Minification App")
-    .setDescription("Minify your source code and files")
-    .setVersion("1.0")
-    .addBearerAuth()
+    .setTitle("MNFY")
+    .setDescription("minify your css & js files")
+    .setVersion("1.0.0")
+    .addTag("api")
+    .addBearerAuth() // Specify bearer authentication if used
     .build();
   const globalPrefix = "api";
   const document = SwaggerModule.createDocument(app, swaggerConfig);

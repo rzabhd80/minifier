@@ -8,12 +8,13 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { JwtModule } from "@nestjs/jwt";
 import { UserModule } from "./user/user.module";
 import { UploadModule } from "./upload/upload.module";
-import { CurrentUserMiddleware, userGuard } from "../middlewares";
+import { CurrentUserMiddleware } from "../middlewares";
 import { MulterModule } from "@nestjs/platform-express";
 import { MimeTypeMiddleware } from "../middlewares/upload_file_middleware";
 import * as process from "process";
 import { entities } from "../libs/models";
 
+console.log(__dirname.replace("src", "libs" + "/models.{.ts,.js}"));
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -23,8 +24,9 @@ import { entities } from "../libs/models";
       username: process.env.DATABASE_USER || "reza",
       password: process.env.DATABASE_PASSWORD || "reza",
       database: process.env.DATABASE_HOST || "minification",
-      entities: [__dirname + "/**/*.entity{.ts,.js}"],
+      entities: [__dirname.replace("src", "libs") + "/models/*{.ts,.js}"],
       synchronize: true,
+      logging: false,
     }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
@@ -40,7 +42,6 @@ import { entities } from "../libs/models";
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CurrentUserMiddleware).forRoutes("*");
-    consumer.apply(MimeTypeMiddleware).forRoutes("*");
+    consumer.apply(CurrentUserMiddleware, MimeTypeMiddleware).forRoutes("*");
   }
 }
