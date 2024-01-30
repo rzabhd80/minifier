@@ -45,6 +45,7 @@ export class UploadController {
     @UploadedFile() file: Express.Multer.File,
     @currentUser() user: User
   ) {
+    console.log(`current user ${user.email}`);
     return this.commandBus.execute(
       new UploadFileCommand(uploadFileDto, user.id, file)
     );

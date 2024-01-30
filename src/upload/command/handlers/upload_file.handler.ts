@@ -65,6 +65,7 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
       console.error(`Error: ${error.message}`);
     }
   }
+
   /**
    * reading the entire file in chunks so it would not cause memory overflow
    * **/
@@ -122,7 +123,10 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
       const filePath = path.join(userFolderPath, safeFileName);
       // Save the file
       await this.saveFile(file, filePath);
-      const fileEntity = new UploadedFile();
+      let fileEntity = await this.uploadedFileRepository.findOne({
+        where: { userId: userId, filename: safeFileName },
+      });
+      if (!fileEntity) fileEntity = new UploadedFile();
       // Minify the file
       if (minify) {
         const { duration, memoryUsage } = await this.minifyFile(
