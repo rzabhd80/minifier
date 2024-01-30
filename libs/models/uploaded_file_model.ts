@@ -7,7 +7,7 @@ import { User } from "./user_model";
 export class UploadedFile extends BaseModel {
   @Column("varchar", { name: "mimetype", nullable: false, unique: false })
   mimetype: string;
-  @Column("varchar", { name: "filename", unique: true })
+  @Column("varchar", { name: "filename", unique: false })
   filename: string;
   @Column("double precision", { nullable: true })
   minificationDuration?: number;

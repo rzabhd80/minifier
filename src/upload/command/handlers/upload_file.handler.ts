@@ -110,14 +110,13 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
     const { minify } = uploadFileDto;
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) throw new CustomError(USER_NOT_FOUND);
-    console.log(file.mimetype);
     const uploadedFileMime = file.mimetype.split("/")[1];
-    console.log(uploadedFileMime);
     if (!["javascript", "css", "x-javascript"].includes(uploadedFileMime))
       throw new CustomError(INVALID_MIMETYPE);
     const username = user.email;
     const userFolderPath = path.join("/opt", username);
     const safeFileName = path.basename(file.originalname);
+    let existingFile = false;
     try {
       await this.createDirectoryIfNotExists(userFolderPath);
       const filePath = path.join(userFolderPath, safeFileName);
@@ -127,7 +126,7 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
         where: { userId: userId, filename: safeFileName },
       });
       if (!fileEntity) fileEntity = new UploadedFile();
-      // Minify the file
+      else existingFile = true;
       if (minify) {
         const { duration, memoryUsage } = await this.minifyFile(
           filePath,
@@ -136,12 +135,14 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
         fileEntity.minificationDuration = duration;
         fileEntity.memoryUsageAfterMinification = memoryUsage;
       }
-      fileEntity.filename = safeFileName;
-      fileEntity.mimetype = uploadedFileMime;
-      fileEntity.user = user;
-      fileEntity.size = file.size;
-      fileEntity.createdAt = new Date();
-      await this.uploadedFileRepository.save(fileEntity);
+      if (!existingFile) {
+        fileEntity.filename = safeFileName;
+        fileEntity.mimetype = uploadedFileMime;
+        fileEntity.user = user;
+        fileEntity.size = file.size;
+        fileEntity.createdAt = new Date();
+      }
+      await fileEntity.save();
 
       return {
         message: "File uploaded and minified successfully",

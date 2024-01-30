@@ -10,7 +10,6 @@ import { UserModule } from "./user/user.module";
 import { UploadModule } from "./upload/upload.module";
 import { CurrentUserMiddleware } from "../middlewares";
 import { MulterModule } from "@nestjs/platform-express";
-import { MimeTypeMiddleware } from "../middlewares/upload_file_middleware";
 import * as process from "process";
 import { entities } from "../libs/models";
 
@@ -42,6 +41,6 @@ console.log(__dirname.replace("src", "libs" + "/models.{.ts,.js}"));
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CurrentUserMiddleware, MimeTypeMiddleware).forRoutes("*");
+    consumer.apply(CurrentUserMiddleware).forRoutes("*");
   }
 }
