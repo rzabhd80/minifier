@@ -18,16 +18,19 @@ export class SeederFactoryHandler
   ) {}
 
   async execute() {
+    let user = await this.userRepo.findOne({
+      where: { email: "parspack@parspack.com", name: "parspack" },
+    });
     const hashed_password = await generateHashPassword("Twu5hKXXKZEQaJ");
-    const user = await this.userRepo
+    const token = this.jwtService.sign(generateUserToken(user));
+    if (user) return { user: user, token: token };
+    user = await this.userRepo
       .create({
         name: "parspack",
         email: "parspack@parspack.com",
         password: hashed_password,
       })
       .save();
-    if (!user) throw new CustomError(USER_NOT_FOUND);
-    const token = this.jwtService.sign(generateUserToken(user));
     return { user: user, token: token };
   }
 }
