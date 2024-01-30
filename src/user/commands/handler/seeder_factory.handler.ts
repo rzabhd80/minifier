@@ -8,7 +8,9 @@ import { SeederFactoryCommand } from "../impl/seeder_factory.command";
 import { CustomError, USER_NOT_FOUND } from "exceptions/exceptions";
 
 @CommandHandler(SeederFactoryCommand)
-export class SeederFactoryHandler implements ICommandHandler<SeederFactoryCommand> {
+export class SeederFactoryHandler
+  implements ICommandHandler<SeederFactoryCommand>
+{
   constructor(
     @InjectRepository(User)
     private userRepo: Repository<User>,
