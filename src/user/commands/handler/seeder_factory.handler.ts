@@ -3,18 +3,12 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "libs/models";
 import { Repository } from "typeorm";
 import { JwtService } from "@nestjs/jwt";
-import {
-  generateHashPassword,
-  generateUserToken,
-} from "helpers";
+import { generateHashPassword, generateUserToken } from "helpers";
 import { SeederFactoryCommand } from "../impl/seeder_factory.command";
-import {
-  CustomError,
-  USER_NOT_FOUND,
-} from "exceptions/exceptions";
+import { CustomError, USER_NOT_FOUND } from "exceptions/exceptions";
 
 @CommandHandler(SeederFactoryCommand)
-export class UserLoginHandler implements ICommandHandler<SeederFactoryCommand> {
+export class SeederFactoryHandler implements ICommandHandler<SeederFactoryCommand> {
   constructor(
     @InjectRepository(User)
     private userRepo: Repository<User>,

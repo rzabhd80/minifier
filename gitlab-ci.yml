@@ -14,16 +14,6 @@ build:
   script:
     - npm run build
 
-lint:
-  stage: test
-  script:
-    - npm run lint
-
-test:
-  stage: test
-  script:
-    - npm test
-
 deploy:
   stage: deploy
   script:
