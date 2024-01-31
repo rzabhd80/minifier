@@ -18,6 +18,7 @@ const get_users_file_query_1 = require("../impl/get_users_file.query");
 const typeorm_1 = require("@nestjs/typeorm");
 const models_1 = require("../../../../libs/models");
 const typeorm_2 = require("typeorm");
+const exceptions_1 = require("../../../../exceptions/exceptions");
 let GetUsersFilesHandler = class GetUsersFilesHandler {
     constructor(userRepo, fileRepo) {
         this.userRepo = userRepo;
@@ -25,6 +26,9 @@ let GetUsersFilesHandler = class GetUsersFilesHandler {
     }
     async execute(query) {
         const { userId } = query;
+        if (!userId) {
+            throw new exceptions_1.CustomError(exceptions_1.INVALID_TOKEN);
+        }
         const usersFiles = this.userRepo
             .createQueryBuilder("user")
             .andWhere("user.id = :userId", { userId: userId })

@@ -22,7 +22,7 @@ const terser_1 = require("terser");
 const exceptions_1 = require("../../../../exceptions/exceptions");
 const path = require("path");
 const fs = require("fs");
-const clean_css_1 = require("clean-css");
+const CleanCSS = require("clean-css");
 let UploadFileHandler = class UploadFileHandler {
     constructor(userRepository, uploadedFileRepository) {
         this.userRepository = userRepository;
@@ -64,10 +64,12 @@ let UploadFileHandler = class UploadFileHandler {
     }
     async minify_css_file(filePath) {
         try {
+            const cleanCss = new CleanCSS();
+            console.log("instance");
             const readStream = fs.createReadStream(filePath, { encoding: "utf-8" });
             let minifiedCss = "";
             readStream.on("data", (chunk) => {
-                minifiedCss += new clean_css_1.default().minify(chunk).styles;
+                minifiedCss += cleanCss.minify(chunk).styles;
             });
             readStream.on("end", async () => {
                 await fs.promises.writeFile(filePath, minifiedCss, "utf-8");
@@ -78,6 +80,7 @@ let UploadFileHandler = class UploadFileHandler {
             });
         }
         catch (error) {
+            console.log(error);
             throw new exceptions_1.CustomError(exceptions_1.MINIFICATION_FAILED);
         }
     }

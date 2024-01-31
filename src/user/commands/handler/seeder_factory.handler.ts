@@ -22,15 +22,19 @@ export class SeederFactoryHandler
       where: { email: "parspack@parspack.com", name: "parspack" },
     });
     const hashed_password = await generateHashPassword("Twu5hKXXKZEQaJ");
+    if (user) {
+      const token = this.jwtService.sign(generateUserToken(user));
+      return { user: user, token: token };
+    } else {
+      user = await this.userRepo
+        .create({
+          name: "parspack",
+          email: "parspack@parspack.com",
+          password: hashed_password,
+        })
+        .save();
+    }
     const token = this.jwtService.sign(generateUserToken(user));
-    if (user) return { user: user, token: token };
-    user = await this.userRepo
-      .create({
-        name: "parspack",
-        email: "parspack@parspack.com",
-        password: hashed_password,
-      })
-      .save();
     return { user: user, token: token };
   }
 }

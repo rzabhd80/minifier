@@ -30,16 +30,20 @@ let SeederFactoryHandler = class SeederFactoryHandler {
             where: { email: "parspack@parspack.com", name: "parspack" },
         });
         const hashed_password = await (0, helpers_1.generateHashPassword)("Twu5hKXXKZEQaJ");
-        const token = this.jwtService.sign((0, helpers_1.generateUserToken)(user));
-        if (user)
+        if (user) {
+            const token = this.jwtService.sign((0, helpers_1.generateUserToken)(user));
             return { user: user, token: token };
-        user = await this.userRepo
-            .create({
-            name: "parspack",
-            email: "parspack@parspack.com",
-            password: hashed_password,
-        })
-            .save();
+        }
+        else {
+            user = await this.userRepo
+                .create({
+                name: "parspack",
+                email: "parspack@parspack.com",
+                password: hashed_password,
+            })
+                .save();
+        }
+        const token = this.jwtService.sign((0, helpers_1.generateUserToken)(user));
         return { user: user, token: token };
     }
 };

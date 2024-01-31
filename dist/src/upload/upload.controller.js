@@ -33,7 +33,7 @@ let UploadController = class UploadController {
         return this.commandBus.execute(new impl_1.UploadFileCommand(uploadFileDto, user.id, file));
     }
     async getFiles(user) {
-        return this.queryBus.execute(new get_users_file_query_1.GetUsersFileQuery(user.id));
+        return this.queryBus.execute(new get_users_file_query_1.GetUsersFileQuery(user?.id));
     }
 };
 exports.UploadController = UploadController;

@@ -32,12 +32,12 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 type: "postgres",
-                host: "127.0.0.1",
+                host: process.env.DATABASE_CONNECTION_HOST || "127.0.0.1",
                 port: 5432,
                 username: process.env.DATABASE_USER || "reza",
                 password: process.env.DATABASE_PASSWORD || "reza",
                 database: process.env.DATABASE_HOST || "minification",
-                entities: [__dirname.replace("src", "libs") + "/models/*{.ts,.js}"],
+                entities: models_1.entities,
                 synchronize: true,
                 logging: false,
             }),

@@ -3,6 +3,7 @@ import { GetUsersFileQuery } from "../impl/get_users_file.query";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UploadedFile, User } from "libs/models";
 import { Repository } from "typeorm";
+import { CustomError, INVALID_TOKEN } from "exceptions/exceptions";
 
 @QueryHandler(GetUsersFileQuery)
 export class GetUsersFilesHandler implements IQueryHandler<GetUsersFileQuery> {
@@ -15,6 +16,9 @@ export class GetUsersFilesHandler implements IQueryHandler<GetUsersFileQuery> {
 
   async execute(query: GetUsersFileQuery): Promise<User> {
     const { userId } = query;
+    if (!userId) {
+      throw new CustomError(INVALID_TOKEN);
+    }
     const usersFiles = this.userRepo
       .createQueryBuilder("user")
       .andWhere("user.id = :userId", { userId: userId })

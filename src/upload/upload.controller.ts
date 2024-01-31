@@ -55,6 +55,6 @@ export class UploadController {
   @ApiOperation({ description: "get users file" })
   @ApiBearerAuth()
   async getFiles(@currentUser() user: User) {
-    return this.queryBus.execute(new GetUsersFileQuery(user.id));
+    return this.queryBus.execute(new GetUsersFileQuery(user?.id));
   }
 }
