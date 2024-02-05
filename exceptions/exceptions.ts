@@ -16,6 +16,11 @@ export const USER_NOT_FOUND: ICustomError = {
   description: "User Not Found",
 };
 
+export const USER_ALREADY_EXISTS: ICustomError = {
+  status: HttpStatus.BAD_REQUEST,
+  description: "user already exists",
+};
+
 export const INVALID_PASSWORD: ICustomError = {
   status: HttpStatus.BAD_REQUEST,
   description: "Incorrect Password",
