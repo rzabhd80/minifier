@@ -20,6 +20,7 @@ const models_1 = require("../../../../libs/models");
 const typeorm_2 = require("typeorm");
 const jwt_1 = require("@nestjs/jwt");
 const helpers_1 = require("../../../../helpers");
+const exceptions_1 = require("../../../../exceptions/exceptions");
 let UserSignupHandler = class UserSignupHandler {
     constructor(userRepo, jwtService) {
         this.userRepo = userRepo;
@@ -28,6 +29,9 @@ let UserSignupHandler = class UserSignupHandler {
     async execute(command) {
         const { UserSignupDto } = command;
         const { email, password, name } = UserSignupDto;
+        const user_on_db = await this.userRepo.findOne({ where: { email: email } });
+        if (user_on_db)
+            throw new exceptions_1.CustomError(exceptions_1.USER_ALREADY_EXISTS);
         const hashed_password = await (0, helpers_1.generateHashPassword)(password);
         const user = this.userRepo.create({
             email,

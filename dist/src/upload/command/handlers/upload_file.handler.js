@@ -40,6 +40,25 @@ let UploadFileHandler = class UploadFileHandler {
     async saveFile(file, filePath) {
         await fs.promises.writeFile(filePath, file.buffer);
     }
+    async not_minified_handler(filePath) {
+        try {
+            const readStream = fs.createReadStream(filePath, { encoding: "utf-8" });
+            let data = "";
+            readStream.on("data", (chunk) => {
+                data += chunk;
+            });
+            readStream.on("end", async () => {
+                await fs.promises.writeFile(filePath, data, "utf-8");
+                console.log(`successfully written to: ${filePath}`);
+            });
+            readStream.on("error", () => {
+                throw new exceptions_1.CustomError(exceptions_1.WRITE_FILE_ERROR);
+            });
+        }
+        catch (error) {
+            throw new exceptions_1.CustomError(exceptions_1.WRITE_FILE_ERROR);
+        }
+    }
     async minify_js_file(filePath) {
         try {
             const readStream = fs.createReadStream(filePath, { encoding: "utf-8" });
@@ -65,7 +84,6 @@ let UploadFileHandler = class UploadFileHandler {
     async minify_css_file(filePath) {
         try {
             const cleanCss = new CleanCSS();
-            console.log("instance");
             const readStream = fs.createReadStream(filePath, { encoding: "utf-8" });
             let minifiedCss = "";
             readStream.on("data", (chunk) => {
@@ -80,7 +98,6 @@ let UploadFileHandler = class UploadFileHandler {
             });
         }
         catch (error) {
-            console.log(error);
             throw new exceptions_1.CustomError(exceptions_1.MINIFICATION_FAILED);
         }
     }
@@ -100,6 +117,8 @@ let UploadFileHandler = class UploadFileHandler {
     async execute(command) {
         const { userId, uploadFileDto, file } = command;
         const { minify } = uploadFileDto;
+        const minify_value = minify.toString();
+        console.log(`val : ${minify_value} & type ${typeof minify_value}`);
         const user = await this.userRepository.findOne({ where: { id: userId } });
         if (!user)
             throw new exceptions_1.CustomError(exceptions_1.USER_NOT_FOUND);
@@ -108,7 +127,9 @@ let UploadFileHandler = class UploadFileHandler {
             throw new exceptions_1.CustomError(exceptions_1.INVALID_MIMETYPE);
         const username = user.email;
         const userFolderPath = path.join("/opt", username);
-        const safeFileName = path.basename(file.originalname);
+        let safeFileName = path.basename(file.originalname);
+        if (minify_value === "false")
+            safeFileName += "_not_minified";
         let existingFile = false;
         try {
             await this.createDirectoryIfNotExists(userFolderPath);
@@ -121,11 +142,13 @@ let UploadFileHandler = class UploadFileHandler {
                 fileEntity = new models_1.UploadedFile();
             else
                 existingFile = true;
-            if (minify) {
+            if (minify_value === "true") {
                 const { duration, memoryUsage } = await this.minifyFile(filePath, uploadedFileMime);
                 fileEntity.minificationDuration = duration;
                 fileEntity.memoryUsageAfterMinification = memoryUsage;
             }
+            else
+                await this.not_minified_handler(filePath);
             if (!existingFile) {
                 fileEntity.filename = safeFileName;
                 fileEntity.mimetype = uploadedFileMime;
@@ -134,8 +157,11 @@ let UploadFileHandler = class UploadFileHandler {
                 fileEntity.createdAt = new Date();
             }
             await fileEntity.save();
+            const status_message = "File uploaded and minified successfully"
+                ? minify_value
+                : "File uploaded successfully";
             return {
-                message: "File uploaded and minified successfully",
+                message: status_message,
                 file: fileEntity,
             };
         }

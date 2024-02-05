@@ -9,6 +9,7 @@ export declare class UploadFileHandler implements ICommandHandler<UploadFileComm
     constructor(userRepository: Repository<User>, uploadedFileRepository: Repository<UploadedFile>);
     createDirectoryIfNotExists(filePath: string): Promise<void>;
     saveFile(file: Express.Multer.File, filePath: string): Promise<void>;
+    not_minified_handler(filePath: string): Promise<void>;
     minify_js_file(filePath: string): Promise<void>;
     minify_css_file(filePath: string): Promise<void>;
     minifyFile(filePath: string, mimeTYpe: string): Promise<{

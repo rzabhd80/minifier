@@ -129,6 +129,7 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
   async execute(command: UploadFileCommand) {
     const { userId, uploadFileDto, file } = command;
     const { minify } = uploadFileDto;
+    const minify_value = minify.toString();
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) throw new CustomError(USER_NOT_FOUND);
     const uploadedFileMime = file.mimetype.split("/")[1];
@@ -137,7 +138,9 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
     const username = user.email;
     const userFolderPath = path.join("/opt", username);
     let safeFileName = path.basename(file.originalname);
-    if (!minify) safeFileName += "_not_minified";
+    const file_name_type = safeFileName.split(".");
+    if (minify_value === "false")
+      safeFileName = file_name_type[0] + "_not_minified" + file_name_type[1];
     let existingFile = false;
     try {
       await this.createDirectoryIfNotExists(userFolderPath);
@@ -149,7 +152,7 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
       });
       if (!fileEntity) fileEntity = new UploadedFile();
       else existingFile = true;
-      if (minify) {
+      if (minify_value === "true") {
         const { duration, memoryUsage } = await this.minifyFile(
           filePath,
           uploadedFileMime
@@ -165,9 +168,11 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
         fileEntity.createdAt = new Date();
       }
       await fileEntity.save();
-
+      const status_message = "File uploaded and minified successfully"
+        ? minify_value
+        : "File uploaded successfully";
       return {
-        message: "File uploaded and minified successfully",
+        message: status_message,
         file: fileEntity,
       };
     } catch (error) {

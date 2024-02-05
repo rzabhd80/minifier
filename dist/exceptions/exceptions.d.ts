@@ -7,7 +7,9 @@ export declare class CustomError extends HttpException {
     constructor({ description, status }: ICustomError);
 }
 export declare const USER_NOT_FOUND: ICustomError;
+export declare const USER_ALREADY_EXISTS: ICustomError;
 export declare const INVALID_PASSWORD: ICustomError;
 export declare const MINIFICATION_FAILED: ICustomError;
+export declare const WRITE_FILE_ERROR: ICustomError;
 export declare const INVALID_TOKEN: ICustomError;
 export declare const INVALID_MIMETYPE: ICustomError;
