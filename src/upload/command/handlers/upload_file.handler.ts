@@ -140,7 +140,8 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
     let safeFileName = path.basename(file.originalname);
     const file_name_type = safeFileName.split(".");
     if (minify_value === "false")
-      safeFileName = file_name_type[0] + "_not_minified" + file_name_type[1];
+      safeFileName =
+        file_name_type[0] + "_not_minified" + "." + file_name_type[1];
     let existingFile = false;
     try {
       await this.createDirectoryIfNotExists(userFolderPath);

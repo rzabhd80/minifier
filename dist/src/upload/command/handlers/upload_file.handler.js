@@ -118,7 +118,6 @@ let UploadFileHandler = class UploadFileHandler {
         const { userId, uploadFileDto, file } = command;
         const { minify } = uploadFileDto;
         const minify_value = minify.toString();
-        console.log(`val : ${minify_value} & type ${typeof minify_value}`);
         const user = await this.userRepository.findOne({ where: { id: userId } });
         if (!user)
             throw new exceptions_1.CustomError(exceptions_1.USER_NOT_FOUND);
@@ -128,8 +127,9 @@ let UploadFileHandler = class UploadFileHandler {
         const username = user.email;
         const userFolderPath = path.join("/opt", username);
         let safeFileName = path.basename(file.originalname);
+        const file_name_type = safeFileName.split(".");
         if (minify_value === "false")
-            safeFileName += "_not_minified";
+            safeFileName = file_name_type[0] + "_not_minified" + file_name_type[1];
         let existingFile = false;
         try {
             await this.createDirectoryIfNotExists(userFolderPath);
