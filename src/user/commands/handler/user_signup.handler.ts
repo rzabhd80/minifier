@@ -8,8 +8,7 @@ import { generateHashPassword, generateUserToken } from "helpers";
 import {
   CustomError,
   USER_ALREADY_EXISTS,
-  USER_NOT_FOUND,
-} from "../../../../exceptions/exceptions";
+} from "exceptions/exceptions";
 
 @CommandHandler(UserSignupCommand)
 export class UserSignupHandler implements ICommandHandler<UserSignupCommand> {

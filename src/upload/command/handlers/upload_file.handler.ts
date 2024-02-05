@@ -9,6 +9,7 @@ import {
   INVALID_MIMETYPE,
   MINIFICATION_FAILED,
   USER_NOT_FOUND,
+  WRITE_FILE_ERROR,
 } from "exceptions/exceptions";
 import * as path from "path";
 import * as fs from "fs";
@@ -39,6 +40,25 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
   /**
    *  reading the file in chunks to prevent buffer overflow
    * **/
+
+  async not_minified_handler(filePath: string) {
+    try {
+      const readStream = fs.createReadStream(filePath, { encoding: "utf-8" });
+      let data = "";
+      readStream.on("data", (chunk) => {
+        data += chunk;
+      });
+      readStream.on("end", async () => {
+        await fs.promises.writeFile(filePath, data, "utf-8");
+        console.log(`successfully written to: ${filePath}`);
+      });
+      readStream.on("error", () => {
+        throw new CustomError(WRITE_FILE_ERROR);
+      });
+    } catch (error) {
+      throw new CustomError(WRITE_FILE_ERROR);
+    }
+  }
   async minify_js_file(filePath: string) {
     try {
       const readStream = fs.createReadStream(filePath, { encoding: "utf-8" });
@@ -116,7 +136,8 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
       throw new CustomError(INVALID_MIMETYPE);
     const username = user.email;
     const userFolderPath = path.join("/opt", username);
-    const safeFileName = path.basename(file.originalname);
+    let safeFileName = path.basename(file.originalname);
+    if (!minify) safeFileName += "_not_minified";
     let existingFile = false;
     try {
       await this.createDirectoryIfNotExists(userFolderPath);
@@ -135,7 +156,7 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
         );
         fileEntity.minificationDuration = duration;
         fileEntity.memoryUsageAfterMinification = memoryUsage;
-      }
+      } else await this.not_minified_handler(filePath);
       if (!existingFile) {
         fileEntity.filename = safeFileName;
         fileEntity.mimetype = uploadedFileMime;

@@ -30,6 +30,11 @@ export const MINIFICATION_FAILED: ICustomError = {
   description: "could not minify the file",
 };
 
+export const WRITE_FILE_ERROR: ICustomError = {
+  status: HttpStatus.INTERNAL_SERVER_ERROR,
+  description: "could not write the file",
+};
+
 export const INVALID_TOKEN: ICustomError = {
   status: HttpStatus.UNAUTHORIZED,
   description:
