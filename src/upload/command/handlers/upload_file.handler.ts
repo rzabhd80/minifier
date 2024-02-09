@@ -14,6 +14,7 @@ import {
 import * as path from "path";
 import * as fs from "fs";
 import * as CleanCSS from "clean-css";
+import {response} from "express";
 
 @CommandHandler(UploadFileCommand)
 export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
@@ -138,6 +139,7 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
     const username = user.email;
     const userFolderPath = path.join("/opt", username);
     let safeFileName = path.basename(file.originalname);
+    let fileSize = 0;
     const file_name_type = safeFileName.split(".");
     if (minify_value === "false")
       safeFileName =
@@ -172,6 +174,8 @@ export class UploadFileHandler implements ICommandHandler<UploadFileCommand> {
       const status_message = "File uploaded and minified successfully"
         ? minify_value
         : "File uploaded successfully";
+      fileSize = (await fs.promises.stat(filePath)).size;
+      response.setHeader("file_size", fileSize);
       return {
         message: status_message,
         file: fileEntity,
